@@ -61,8 +61,8 @@ start_k3d() {
 kubectl_for_vagrant_user() {
 	runuser -l vagrant -c "mkdir -p ~/.kube/"
 	runuser -l vagrant -c "k3d kubeconfig get -a > ~/.kube/config"
-	chmod 600 /home/vagrant/.kube/config
-	echo 'export KUBECONFIG="/home/vagrant/.kube/config"' >>~vagrant/.bashrc
+	chmod 600 /clusterzero/.kube/config
+	echo 'export KUBECONFIG="/clusterzero/.kube/config"' >>~vagrant/.bashrc
 }
 
 helm_install_tink_stack() {
