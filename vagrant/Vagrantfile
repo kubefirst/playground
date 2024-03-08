@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "clusterzero" do |clusterzero|
     clusterzero.vm.box = "generic/ubuntu2204"
-    clusterzero.vm.synced_folder "", DEST_DIR_BASE
+    clusterzero.vm.synced_folder ".", DEST_DIR_BASE
     clusterzero.vm.network "private_network", ip: "192.168.56.4", netmask: "255.255.255.0",
                                         libvirt__network_name: "tink_network",
                                         libvirt__host_ip: LIBVIRT_HOST_IP,
@@ -48,7 +48,7 @@ Vagrant.configure("2") do |config|
     clusterzero.vm.provider "libvirt" do |l, override|
       l.memory = 2048
       l.cpus = 2
-      override.vm.synced_folder "", DEST_DIR_BASE, type: "rsync"
+      override.vm.synced_folder ".", DEST_DIR_BASE, type: "rsync"
     end
 
     clusterzero.vm.provision :shell, path: "setup.sh", args: [PROVISIONER_IP, MACHINE1_IP, MACHINE1_MAC, DEST_DIR_BASE, LOADBALANCER_IP, HELM_CHART_VERSION, HELM_LOADBALANCER_INTERFACE, KUBECTL_VERSION, K3D_VERSION, GATEWAY_IP]
