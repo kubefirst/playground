@@ -29,29 +29,29 @@ HELM_CHART_VERSION = ENV["HELM_CHART_VERSION"] || "0.4.0"
 KUBECTL_VERSION = ENV["KUBECTL_VERSION"] || "1.28.3"
 K3D_VERSION = ENV["K3D_VERSION"] || "v5.6.0"
 HELM_LOADBALANCER_INTERFACE = ENV["HELM_LOADBALANCER_INTERFACE"] || "eth1"
-DEST_DIR_BASE = "/sandbox/stack/"
+DEST_DIR_BASE = "/clusterzero/"
 
 Vagrant.configure("2") do |config|
   config.vm.provider :libvirt do |libvirt|
     libvirt.qemu_use_session = false
   end
 
-  config.vm.define "stack" do |stack|
-    stack.vm.box = "generic/ubuntu2204"
-    stack.vm.synced_folder "", DEST_DIR_BASE
-    stack.vm.network "private_network", ip: "192.168.56.4", netmask: "255.255.255.0",
+  config.vm.define "clusterzero" do |clusterzero|
+    clusterzero.vm.box = "generic/ubuntu2204"
+    clusterzero.vm.synced_folder "", DEST_DIR_BASE
+    clusterzero.vm.network "private_network", ip: "192.168.56.4", netmask: "255.255.255.0",
                                         libvirt__network_name: "tink_network",
                                         libvirt__host_ip: LIBVIRT_HOST_IP,
                                         libvirt__netmask: "255.255.255.0",
                                         libvirt__dhcp_enabled: false
 
-    stack.vm.provider "libvirt" do |l, override|
+    clusterzero.vm.provider "libvirt" do |l, override|
       l.memory = 2048
       l.cpus = 2
       override.vm.synced_folder "", DEST_DIR_BASE, type: "rsync"
     end
 
-    stack.vm.provision :shell, path: "setup.sh", args: [PROVISIONER_IP, MACHINE1_IP, MACHINE1_MAC, DEST_DIR_BASE, LOADBALANCER_IP, HELM_CHART_VERSION, HELM_LOADBALANCER_INTERFACE, KUBECTL_VERSION, K3D_VERSION, GATEWAY_IP]
+    clusterzero.vm.provision :shell, path: "setup.sh", args: [PROVISIONER_IP, MACHINE1_IP, MACHINE1_MAC, DEST_DIR_BASE, LOADBALANCER_IP, HELM_CHART_VERSION, HELM_LOADBALANCER_INTERFACE, KUBECTL_VERSION, K3D_VERSION, GATEWAY_IP]
   end
 
   config.vm.define :machine1, autostart: false do |machine1|
