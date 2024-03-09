@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: scaffold-agent-machine3
+  name: scaffold-agent-4
   namespace: tink-system
 spec:
   template:
@@ -16,7 +16,7 @@ spec:
             # - "999"
             - bootstrap
             - --apikey
-            - "machine3"
+            - "4"
           env:
             - name: "KUBEFIRST_DEBUG"
               value: "true"
