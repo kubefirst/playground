@@ -11,9 +11,6 @@ spec:
           imagePullPolicy: IfNotPresent
           name: scaffold-agent
           args:
-            # - sleep
-            # - --time
-            # - "999"
             - bootstrap
             - --apikey
             - "1"
