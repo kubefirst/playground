@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: scaffold-agent-2
+  namespace: tink-system
+spec:
+  template:
+    spec:
+      containers:
+        - image: ghcr.io/kubefirst/scaffold-agent:0b7e539
+          imagePullPolicy: IfNotPresent
+          name: scaffold-agent
+          args:
+            - bootstrap
+            - --apikey
+            - "2"
+          env:
+            - name: "KUBEFIRST_DEBUG"
+              value: "true"
+          volumeMounts:
+            - mountPath: "/home/vagrant/tokenized"
+              name: work-tokenized
+            - mountPath: "/home/vagrant/maninfests"
+              name: work-manifests
+      restartPolicy: OnFailure
+      serviceAccountName: scaffold-agent
+      imagePullSecrets:
+        - name: github-com
+      volumes:
+        - name: work-tokenized
+          configMap:
+            name: tokenized-files
+        - name: work-manifests
+          emptyDir: {}
