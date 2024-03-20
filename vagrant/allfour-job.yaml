@@ -20,7 +20,7 @@ spec:
           volumeMounts:
             - mountPath: "/home/vagrant/tokenized"
               name: work-tokenized
-            - mountPath: "/home/vagrant/maninfests"
+            - mountPath: "/home/vagrant/manifests"
               name: work-manifests
       restartPolicy: OnFailure
       serviceAccountName: scaffold-agent
