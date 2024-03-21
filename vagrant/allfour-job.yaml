@@ -1,30 +1,3 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-work-manifests
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: manual
-  hostPath:
-    path: /clusterzero/manifests
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-work-manifests
-  namespace: tink-system
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: manual
----
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -34,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-        - image: ghcr.io/kubefirst/scaffold-agent:7e5279f
+        - image: ghcr.io/kubefirst/scaffold-agent:0b7e539
           imagePullPolicy: IfNotPresent
           name: scaffold-agent
           args:
@@ -47,7 +20,7 @@ spec:
           volumeMounts:
             - mountPath: "/home/vagrant/tokenized"
               name: work-tokenized
-            - mountPath: "/home/vagrant/manifests"
+            - mountPath: "/home/vagrant/maninfests"
               name: work-manifests
       restartPolicy: OnFailure
       serviceAccountName: scaffold-agent
@@ -58,6 +31,4 @@ spec:
           configMap:
             name: tokenized-files
         - name: work-manifests
-          persistentVolumeClaim:
-            claimName: pvc-work-manifests
-#          emptyDir: {}
+          emptyDir: {}
