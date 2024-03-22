@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-        - image: ghcr.io/kubefirst/scaffold-agent:0b7e539
+        - image: ghcr.io/kubefirst/scaffold-agent:81fad96
           imagePullPolicy: IfNotPresent
           name: scaffold-agent
           args:
